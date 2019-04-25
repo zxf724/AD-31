@@ -40,7 +40,6 @@ void CMD_Task(void const *argument);
 static void CMD_ProcPoll(void);
 static int  CMD_UART_IsLogin(uint8_t num);
 static void CMD_LoginProc(uint8_t pipe, uint8_t *dat);
-static void CMD_PipeSendData(uint8_t pipe, uint8_t *dat, uint16_t len);
 static void CMD_Console(int argc, char *argv[]);
 
 /* Exported functions --------------------------------------------------------*/
@@ -255,15 +254,22 @@ void CMD_UART_Read_Poll(void)
     uint8_t *buf = NULL;
     uint16_t len = 0;
     int pos = -1;
+    // static uint16_t gs_countdown_time = 0;
 
     for (num = 1; num <= UART_PORT_MAX; num++) {
         len = UART_DataSize(num);
         if (len > 0) {
             /*串口为命令行占用的串口时将数据发往处理队列*/
-            if (num == CMD_Pipe) {
+            if (num == 2) {   //CMD_Pipe
                 buf = MMEMORY_ALLOC(len + 1);
                 if (buf != NULL) {
-                    UART_ReadData(num, buf, len);
+                    if(UART_ReadData(num, buf, len)){
+                        for(uint8_t i= 0;i<=8;i++) {
+                            DBG_LOG("receive buf[%d] is = %02x",i,buf[i]);
+                            delay(20);
+                            // ControlToCommunicationPoll(buf);
+                      }
+                    }
                     buf[len] = 0;
                     CMD_NewData(num, buf, len);
                     MMEMORY_FREE(buf);
@@ -432,7 +438,7 @@ static void CMD_LoginProc(uint8_t pipe, uint8_t *dat)
  * @param dat  待发送的数据指针
  * @param len  数据的长度
  */
-static void CMD_PipeSendData(uint8_t pipe, uint8_t *dat, uint16_t len)
+void CMD_PipeSendData(uint8_t pipe, uint8_t *dat, uint16_t len)
 {
     if (pipe > 0) {
 #if CMD_UART_EN == 1

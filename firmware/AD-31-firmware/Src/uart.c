@@ -18,6 +18,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "user_comm.h"
 #include "uart.h"
+#include "console.h"
+#include "process.h"
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
@@ -542,3 +544,29 @@ static void UART_Console(int argc, char *argv[])
     }
 }
 
+/**
+ * control board to communication board
+ */
+void ControlToCommunicationPoll(uint8_t *dat) {
+    static uint16_t gs_countdown_time = 0;
+    cJSON *sit;
+    gs_countdown_time = (dat[5] << 8) | dat[6];
+    DBG_LOG("gs_countdown_time is %04x",gs_countdown_time);
+    if(gs_countdown_time > 0) {
+        cJSON_AddNumberToObject(sit, "sit", 1);
+        CMD_Updata("CMD-03",sit);
+    }
+}
+
+/**
+ * communication board to control board
+ */
+void CommunicationToControlPoll(uint8_t byte2 , uint8_t byte3) {
+    static uint8_t dat[5] = {0x06,0x01,0x00,0x28,0x2F};     // 11 = 1min +10
+    dat[2] = byte2;
+    dat[3] = byte3;
+    // DBG_LOG("dat[3] = %02x",dat[3]);
+    //check digit
+    dat[4] = dat[0] + dat[1] + dat[2] + dat[3];
+    CMD_PipeSendData(2,dat,sizeof(dat));  //send data to board
+}

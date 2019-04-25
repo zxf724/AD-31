@@ -69,6 +69,9 @@ void UART_Refresh_Poll(void);
 
 BOOL UART_ReceiveByte_IRQ(uint8_t num);
 
+void ControlToCommunicationPoll(uint8_t *dat);
+void CommunicationToControlPoll(uint8_t byte2 , uint8_t byte3);
+
 #endif
 
 

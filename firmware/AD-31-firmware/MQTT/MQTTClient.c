@@ -46,7 +46,7 @@ void  databasepack(char *cmd, cJSON *desired, char *buf){
 * 登录处理
  * param “Connect”登录信息，“Heartbeat”心跳包
  */
-int32_t log_in(char *buf){
+int32_t log_in(char *buf) {
     cJSON *root;
     root = cJSON_CreateObject();
     if (root != NULL) {
@@ -301,6 +301,7 @@ exit:
 return rc;
 #endif
 }
+
 void MQTTCleanSession(MQTTClient* c)
 {
     int i = 0;
@@ -557,6 +558,8 @@ exit:
     return rc;
 #endif
 }
+
+
 int MQTTSetMessageHandler(MQTTClient* c, const char* topicFilter, messageHandler messageHandler)
 {
     int rc = FAILURE;

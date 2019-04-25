@@ -468,7 +468,7 @@ static void Manager_MQTT(void)
     }
 
     /*已有服务器连接参*/
-    if (PARAM_LEGAL(mqttPar.MQTT_Server) && mqttPar.MQTT_Port != 0){
+    if (PARAM_LEGAL(mqttPar.MQTT_Server) && mqttPar.MQTT_Port != 0) {
         /*无连接时开始连*/
         if (mClient.isconnected == 0) {            
             if (System_SockIsLock() == FALSE) {

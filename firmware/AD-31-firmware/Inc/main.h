@@ -106,6 +106,7 @@ void Error_Handler(void);
 #define M2M_STATUS_GPIO_Port GPIOA
 #define M2M_POWER_EN_Pin GPIO_PIN_12
 #define M2M_POWER_EN_GPIO_Port GPIOA
+#define EC20_EN  GPIO_PIN_12
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

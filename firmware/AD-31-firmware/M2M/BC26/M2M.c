@@ -570,12 +570,12 @@ static uint16_t TCPIP_Send(uint8_t *data, uint16_t len)
     char *p = NULL;
     char *hexdata = NULL;
     if (data != NULL && len > 0) {
-        hexdata = pvPortMalloc((len << 1));  
+        hexdata = pvPortMalloc((len << 1));
         if(hexdata != NULL){
             ByteToHexStr(data, hexdata, len);
             char tmp[25];
             sprintf(tmp, "AT+QISENDEX=0,%d,", len);
-            M2M_SEND_DATA((uint8_t*)tmp,strlen(tmp));        
+            M2M_SEND_DATA((uint8_t*)tmp,strlen(tmp));
             M2M_SEND_DATA((uint8_t*)hexdata, (len << 1));
             vPortFree(hexdata); 
             DBG_LOG("hexdata len: %d \r\n",(len << 1));

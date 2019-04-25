@@ -22,6 +22,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "prjlib.h"
 #include "config.h"
+#include "cJSON.h"
 
 /* Exported define -----------------------------------------------------------*/
 /*定义分路开关的最大数*/
@@ -189,4 +190,7 @@ void Publish_DFUReq(uint32_t offset, uint16_t size);
 void PublishSParam(uint8 aucBuf[8]);
 void Publish_Reset(void);
 void Publish_BreackerSort(char* topic);
+
+BOOL CMD_Updata(char *cmd, cJSON *desired);
+
 #endif
